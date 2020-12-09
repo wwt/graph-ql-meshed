@@ -5,9 +5,10 @@ import logger from 'morgan'
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
 import { fileURLToPath } from 'url';
-const __dirname = fileURLToPath(import.meta.url);
 
+const __dirname = fileURLToPath(import.meta.url);
 const app = express();
+
 
 app.use(logger('dev'));
 app.use(express.json());
