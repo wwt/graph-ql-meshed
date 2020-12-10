@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "db.sqlite",
+            "database": "${workspaceFolder:graph-ql-meshed}/db.sqlite"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
