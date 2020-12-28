@@ -1,4 +1,6 @@
-import { Sequelize } from 'sequelize';
+import pkg from 'sequelize';
+const { Sequelize, QueryTypes } = pkg;
+import initializeTables from './database';
 import initializeModels from './models/initializeModels';
 
 export default async function DatabaseFilter(req, res, next) {
@@ -8,7 +10,7 @@ export default async function DatabaseFilter(req, res, next) {
     dialect: 'sqlite',
     storage: './db.sqlite',
   });
-
+  await initializeTables();
   initializeModels(sequelize);
   return next();
 }
