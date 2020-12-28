@@ -1,3 +1,5 @@
+import pkg from 'sequelize';
+const { DataTypes, Model } = pkg;
 import { Chance } from 'chance';
 
 const chance = new Chance();
@@ -22,4 +24,30 @@ export const runUserInserts = (db, callback) => {
 export const selectUserIds = (db) => {
   const select = 'SELECT id FROM user'
   return db.all(select);
+}
+
+const modelAttributes = {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+}
+export default class User extends Model {
+  static initWithConnection(connection) {
+    super.init(modelAttributes, {
+      sequelize: connection,
+      freezeTableName: true,
+      createdAt: false,
+      updatedAt: false
+    });
+  }
 }
