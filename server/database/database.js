@@ -1,33 +1,30 @@
 import sqliteLib from 'sqlite3';
+import { open } from 'sqlite';
 import { createProjectTable, runProjectInserts } from './projects';
-import { createTeamTable, runTeamInserts } from './teams';
-import { createUserTable, runUserInserts } from './users';
+import { createTeamMemberTable, createTeamTable, runTeamInserts, runTeamMemberInserts, selectTeamIds } from './teams';
+import { createUserTable, runUserInserts, selectUserIds } from './users';
 
-const sqlite3 = sqliteLib.verbose();
-const DBSOURCE = 'db.sqlite';
+const DBSOURCE = './db.sqlite';
+export const createDbConnection = async () => {
+  return open({
+    filename: DBSOURCE,
+    driver: sqliteLib.Database
+  })
+}
 
-const db = new sqlite3.Database(DBSOURCE, (err) => {
-  if (err) {
-    console.error(err.message);
-    throw err;
-  } else {
-    console.log('Connected to the SQLite database.');
-    db.run(createUserTable(), (err) => {
-      if (!err) {
-        runUserInserts(db);
-      }
-    });
-    db.run(createTeamTable(), (err) => {
-      if (!err) {
-        runTeamInserts(db);
-      }
-    })
-    db.run(createProjectTable(), (err) => {
-      if (!err) {
-        runProjectInserts(db);
-      }
-    })
-  }
-});
-
-export default db;
+(async () => {
+  const dbLocal = await createDbConnection()
+  console.log('Connected to database')
+  await dbLocal.exec(createUserTable());
+  await dbLocal.exec(createTeamTable());
+  await dbLocal.exec(createTeamMemberTable());
+  runUserInserts(dbLocal);
+  runTeamInserts(dbLocal);
+  const userIds = (await selectUserIds(dbLocal)).map(user => user.id);
+  const teamIds = (await selectTeamIds(dbLocal)).map(team => team.id);
+  runTeamMemberInserts(dbLocal, userIds, teamIds)
+  await dbLocal.exec(createProjectTable());
+  runProjectInserts(dbLocal, userIds);
+  
+  console.log('Init complete')
+})();

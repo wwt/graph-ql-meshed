@@ -3,7 +3,7 @@ import { Chance } from 'chance';
 const chance = new Chance();
 
 export const createProjectTable = (_) => {
-  return `CREATE TABLE project (
+  return `CREATE TABLE IF NOT EXISTS project (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT, 
         team_id INTEGER,
@@ -13,10 +13,10 @@ export const createProjectTable = (_) => {
         )`;
 };
 
-export const runProjectInserts = (db) => {
-    const insert = 'INSERT INTO project (name, team_id) VALUES ';
+export const runProjectInserts = (db, userIds) => {
+    const insert = 'INSERT INTO project (name, team_id, lead_id) VALUES ';
     const valuesBatched = Array.from({ length: 100 }, (_, k) => {
-      return `("${chance.animal()}", "${k}")`;
+      return `("${chance.animal()}", ${k + 1}, ${userIds[k]})`;
     })
     db.run(insert.concat(valuesBatched));
 }
