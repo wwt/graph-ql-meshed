@@ -1,9 +1,9 @@
 import express from 'express';
-import User from '../database/users';
+import TeamMember from '../database/teamMembers';
 
 const router = express.Router();
 router.get('/', async (req, res, next) => {
-  const data = await User.findAll();
+  const data = await TeamMember.findAll();
   if (!data) {
     return response.status(404).send();
   }

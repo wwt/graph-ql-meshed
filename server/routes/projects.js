@@ -1,9 +1,9 @@
 import express from 'express';
-import User from '../database/users';
+import Project from '../database/projects';
 
 const router = express.Router();
 router.get('/', async (req, res, next) => {
-  const data = await User.findAll();
+  const data = await Project.findAll();
   if (!data) {
     return response.status(404).send();
   }

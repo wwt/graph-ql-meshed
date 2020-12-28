@@ -1,4 +1,6 @@
 import { Chance } from 'chance';
+import pkg from 'sequelize';
+const { DataTypes, Model } = pkg;
 
 const chance = new Chance();
 
@@ -19,4 +21,30 @@ export const runProjectInserts = (db, userIds) => {
       return `("${chance.animal()}", ${k + 1}, ${userIds[k]})`;
     })
     db.run(insert.concat(valuesBatched));
+}
+
+const modelAttributes = {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true
+  },
+  team_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  lead_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true
+  },
+}
+export default class Project extends Model {
+  static initWithConnection(connection) {
+    super.init(modelAttributes, {
+      sequelize: connection,
+      freezeTableName: true,
+      createdAt: false,
+      updatedAt: false
+    });
+  }
 }

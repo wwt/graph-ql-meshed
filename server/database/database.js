@@ -1,11 +1,12 @@
 import sqliteLib from 'sqlite3';
 import { open } from 'sqlite';
 import { createProjectTable, runProjectInserts } from './projects';
-import { createTeamMemberTable, createTeamTable, runTeamInserts, runTeamMemberInserts, selectTeamIds } from './teams';
+import { createTeamTable, runTeamInserts, selectTeamIds } from './teams';
+import { createTeamMemberTable, runTeamMemberInserts } from "./teamMembers";
 import { createUserTable, runUserInserts, selectUserIds } from './users';
 
 const DBSOURCE = './db.sqlite';
-export const createDbConnection = async () => {
+const createDbConnection = async () => {
   return open({
     filename: DBSOURCE,
     driver: sqliteLib.Database

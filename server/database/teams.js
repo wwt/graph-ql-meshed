@@ -1,7 +1,8 @@
 import { Chance } from 'chance';
-import flatten from 'lodash/flatten';
+import pkg from 'sequelize';
+const { DataTypes, Model } = pkg;
 
-const chance = new Chance();
+export const chance = new Chance();
 
 export const createTeamTable = (_) => {
   return `CREATE TABLE IF NOT EXISTS team (
@@ -10,20 +11,11 @@ export const createTeamTable = (_) => {
         )`;
 };
 
-export const createTeamMemberTable = (_) => {
-  return `CREATE TABLE IF NOT EXISTS teammember (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        member_id INTEGER,
-        team_id INTEGER,
-        FOREIGN KEY (member_id) REFERENCES user (id),
-        FOREIGN KEY (team_id) REFERENCES team (id)
-        )`;
-};
-
 export const selectTeamIds = (db) => {
   const select = 'SELECT id FROM team';
   return db.all(select);
 };
+
 export const runTeamInserts = (db) => {
   const insert = 'INSERT INTO team (name) VALUES ';
   const valuesBatched = Array.from({ length: 100 }, (_) => {
@@ -32,18 +24,23 @@ export const runTeamInserts = (db) => {
   db.run(insert.concat(valuesBatched));
 };
 
-export const runTeamMemberInserts = (db, userIds, teamIds) => {
-  const insert = 'INSERT INTO teammember (member_id, team_id) VALUES ';
-  const valuesBatched = teamIds.map((teamId) => {
-    const teams = randomizedTeam(userIds).map(
-      (memberId) => `(${memberId}, ${teamId})`
-    );
-    return flatten(teams);
-  });
-  db.run(insert.concat(valuesBatched));
-};
-
-const randomizedTeam = (userIds) => {
-  const teamSize = chance.natural({ min: 1, max: 5 });
-  return chance.pickset(userIds, teamSize);
-};
+const modelAttributes = {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+}
+export default class Team extends Model {
+  static initWithConnection(connection) {
+    super.init(modelAttributes, {
+      sequelize: connection,
+      freezeTableName: true,
+      createdAt: false,
+      updatedAt: false
+    });
+  }
+}

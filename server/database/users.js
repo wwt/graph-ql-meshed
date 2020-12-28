@@ -1,7 +1,6 @@
+import { Chance } from 'chance';
 import pkg from 'sequelize';
 const { DataTypes, Model } = pkg;
-import { Chance } from 'chance';
-
 const chance = new Chance();
 
 export const createUserTable = (_) => {

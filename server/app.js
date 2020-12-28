@@ -4,6 +4,9 @@ import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
+import teamsRouter from './routes/teams';
+import teamMembersRouter from './routes/teamMembers';
+import projectsRouter from './routes/projects';
 import { fileURLToPath } from 'url';
 import DatabaseFilter from './database/databaseFilter';
 
@@ -20,5 +23,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/', DatabaseFilter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/teams', teamsRouter);
+app.use('/teamMembers', teamMembersRouter);
+app.use('/projects', projectsRouter);
 
 export default app;
