@@ -1,0 +1,11 @@
+sources:
+  - name: ProjectBuildoutApi
+    handler:
+      jsonSchema:
+        baseUrl: http://localhost:3000
+        operations:
+          - type: Query
+            field: users
+            path: /users
+            method: GET
+            responseSchema: ./jsonSchemas/usersResponse.json

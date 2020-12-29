@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "title": "Users API Response",
+  "description": "Desc Api Population",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "title": "Result",
+        "description": "Result of API",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
