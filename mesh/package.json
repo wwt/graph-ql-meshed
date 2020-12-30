@@ -2,5 +2,11 @@
   "name": "mesh",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@graphql-mesh/cli": "^0.15.0",
+    "@graphql-mesh/graphql": "^0.10.5",
+    "@graphql-mesh/json-schema": "^0.8.14",
+    "graphql": "^15.4.0"
+  }
 }
