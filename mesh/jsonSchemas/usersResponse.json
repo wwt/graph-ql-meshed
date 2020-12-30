@@ -1,14 +1,14 @@
 {
   "type": "object",
-  "title": "Users API Response",
-  "description": "Desc Api Population",
+  "title": "UsersResponse",
+  "description": "A list of Users in ProjectBuildout",
   "properties": {
     "data": {
       "type": "array",
       "items": {
         "type": "object",
-        "title": "Result",
-        "description": "Result of API",
+        "title": "User",
+        "description": "An instance of a User",
         "properties": {
           "name": {
             "type": "string"
